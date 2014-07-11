@@ -1,4 +1,4 @@
-override CXXFLAGS += -std=c++11 -g -Wall -O2 -pipe
+override CXXFLAGS += -std=c++11 -g -Wall -O2 -pipe -Wno-sign-compare
 INC               += -I.
 LDFLAGS           :=
 CC                := cc
