@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 
   std::string salt(argv[1]);
 
-  hashidsxx::Hashids hash(salt, 16);
+  hashidsxx::Hashids hash(salt,"abcdefghijklmnopqrstuvwxyz");
 
-  std::cout << hash.encrypt({1337}) << std::endl;
+  std::cout << hash.encrypt({123456789}) << std::endl;
 };
