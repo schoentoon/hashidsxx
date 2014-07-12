@@ -40,7 +40,9 @@ private:
   std::string& _reorder(std::string &input, const std::string &salt) const;
   std::string _reorder_norewrite(const std::string &input, const std::string &salt) const;
   std::string _hash(uint32_t number, const std::string &alphabet) const;
+  uint32_t _unhash(const std::string& input, const std::string &alphabet) const;
   void _ensure_length(std::string &output, std::string &alphabet, int values_hash) const;
+  std::vector<std::string> _split(const std::string &hash, const std::string &splitters) const;
 };
 
 };

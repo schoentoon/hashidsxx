@@ -89,6 +89,18 @@ std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const
   };
 }
 
+uint32_t Hashids::_unhash(const std::string& input, const std::string &alphabet) const
+{
+  uint32_t output = 0;
+  for (int i = 0; i < input.size(); ++i) {
+    char c = input[i];
+    std::string::size_type pos = alphabet.find(c);
+    output += pos * std::pow(alphabet.size(), input.size() - i - 1);
+  };
+
+  return output;
+}
+
 void Hashids::_ensure_length(std::string &output, std::string &alphabet, int values_hash) const
 {
   int guard_index = (values_hash + output[0]) % _guards.size();
@@ -111,6 +123,22 @@ void Hashids::_ensure_length(std::string &output, std::string &alphabet, int val
       output = output.substr(from_index, _min_length);
     };
   };
+}
+
+std::vector<std::string> Hashids::_split(const std::string &input, const std::string &splitters) const
+{
+  std::vector<std::string> parts;
+  std::string tmp;
+
+  for (char c : input) {
+    if (splitters.find(c) != std::string::npos) {
+      parts.push_back(tmp);
+      tmp.clear();
+    } else tmp.push_back(c);
+  };
+  if (!tmp.empty()) parts.push_back(tmp);
+
+  return parts;
 }
 
 std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
@@ -156,6 +184,29 @@ std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
 std::vector<uint32_t> Hashids::decrypt(const std::string& input) const
 {
   std::vector<uint32_t> output;
+
+  std::vector<std::string> parts = _split(input, _guards);
+
+  std::string hashid = parts[0];
+  if (parts.size() >= 2) hashid = parts[1];
+
+  if (hashid.empty()) return output;
+
+  char lottery = hashid[0];
+  std::string alphabet(_alphabet);
+
+  hashid.erase(hashid.begin());
+
+  std::vector<std::string> hash_parts = _split(hashid, _separators);
+  for (const std::string &part : hash_parts) {
+    std::string alphabet_salt = (lottery + _salt + alphabet);
+    alphabet_salt = alphabet_salt.substr(0, alphabet.size());
+
+    alphabet = _reorder(alphabet, alphabet_salt);
+
+    output.push_back(_unhash(part, alphabet));
+  };
+
   return output;
 }
 
