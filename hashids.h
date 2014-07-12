@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#define DEFAULT_ALPHABET "xcS4F6h89aUbidefI7jkyunopqrsgCYE5GHTKLMtARXz"
+#define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 namespace hashidsxx {
 
