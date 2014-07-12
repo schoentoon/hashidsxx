@@ -1,3 +1,10 @@
+/**
+ *  Hashidsxx (c) 2014 Toon Schoenmakers
+ *
+ *  https://github.com/schoentoon/hashidsxx
+ *  hashidsxx may be freely distributed under the MIT license.
+ */
+
 #pragma once
 
 #include <string>
