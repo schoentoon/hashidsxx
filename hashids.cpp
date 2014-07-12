@@ -73,13 +73,43 @@ std::string& Hashids::_reorder(std::string &input, const std::string &salt) cons
   return input;
 }
 
-std::string Hashids::hash(uint32_t number, const std::string &alphabet) const
+std::string Hashids::_reorder_norewrite(const std::string &input, const std::string &salt) const
+{
+  std::string output(input);
+  return _reorder(output, salt);
+}
+
+std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const
 {
   std::string output;
   while (true) {
     output.insert(output.begin(), alphabet[number % alphabet.size()]);
     number /= alphabet.size();
     if (number == 0) return output;
+  };
+}
+
+void Hashids::_ensure_length(std::string &output, std::string &alphabet, int values_hash) const
+{
+  int guard_index = (values_hash + output[0]) % _guards.size();
+  output.insert(output.begin(), _guards[guard_index]);
+
+  if (output.size() < _min_length) {
+    guard_index = (values_hash + output[2]) % _guards.size();
+    output.push_back(_guards[guard_index]);
+  };
+
+  int split_at = alphabet.size() / 2;
+  while (output.size() < _min_length) {
+    alphabet = _reorder_norewrite(alphabet, alphabet);
+
+    output = alphabet.substr(split_at) + output + alphabet.substr(0, split_at);
+
+    int excess = output.size() - _min_length;
+    if (excess > 0) {
+      int from_index = excess / 2;
+      output = output.substr(from_index, _min_length);
+    };
   };
 }
 
@@ -109,7 +139,7 @@ std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
 
     alphabet = _reorder(alphabet, alphabet_salt);
 
-    std::string last = hash(number, alphabet);
+    std::string last = _hash(number, alphabet);
     output.append(last);
 
     number %= last[0] + i;
@@ -117,6 +147,8 @@ std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
   };
 
   output.pop_back();
+
+  if (output.size() < _min_length) _ensure_length(output, alphabet, values_hash);
 
   return output;
 }

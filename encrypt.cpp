@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 
   std::string salt(argv[1]);
 
-  hashidsxx::Hashids hash(salt);
+  hashidsxx::Hashids hash(salt, 16);
 
   std::cout << hash.encrypt({1337}) << std::endl;
 };

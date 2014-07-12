@@ -28,7 +28,9 @@ private:
   std::string _guards;
 
 public:
-  Hashids(const std::string &salt = "", const std::string alphabet = DEFAULT_ALPHABET, unsigned int min_length = -1);
+  Hashids(const std::string &salt = "", const std::string alphabet = DEFAULT_ALPHABET, unsigned int min_length = 0);
+
+  Hashids(const std::string &salt, unsigned int min_length) : Hashids(salt, DEFAULT_ALPHABET, min_length) {};
 
   std::string encrypt(const std::vector<uint32_t> &input) const;
 
@@ -36,7 +38,9 @@ public:
 
 private:
   std::string& _reorder(std::string &input, const std::string &salt) const;
-  std::string hash(uint32_t number, const std::string &alphabet) const;
+  std::string _reorder_norewrite(const std::string &input, const std::string &salt) const;
+  std::string _hash(uint32_t number, const std::string &alphabet) const;
+  void _ensure_length(std::string &output, std::string &alphabet, int values_hash) const;
 };
 
 };
