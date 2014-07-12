@@ -73,12 +73,52 @@ std::string& Hashids::_reorder(std::string &input, const std::string &salt) cons
   return input;
 }
 
+std::string Hashids::hash(uint32_t number, const std::string &alphabet) const
+{
+  std::string output;
+  while (true) {
+    output.insert(output.begin(), alphabet[number % alphabet.size()]);
+    number /= alphabet.size();
+    if (number == 0) return output;
+  };
+}
+
 std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
 {
   // Encrypting nothing makes no sense
   if (input.empty()) return "";
 
-  return ""; // @todo Implement
+  // Make a copy of our alphabet so we can reorder it on the fly etc
+  std::string alphabet(_alphabet);
+
+  int values_hash = 0;
+  for (int i = 0; i < input.size(); ++i) values_hash += (input[i] % (i + 100));
+
+  char encoded = _alphabet[values_hash % _alphabet.size()];
+  char lottery = encoded;
+
+  std::string output;
+  output.push_back(encoded);
+
+  for (int i = 0; i < input.size(); ++i) {
+    uint32_t number = input[i];
+
+    std::string alphabet_salt;
+    alphabet_salt.push_back(lottery);
+    alphabet_salt.append(_salt).append(alphabet);
+
+    alphabet = _reorder(alphabet, alphabet_salt);
+
+    std::string last = hash(number, alphabet);
+    output.append(last);
+
+    number %= last[0] + i;
+    output.push_back(_separators[number % _separators.size()]);
+  };
+
+  output.pop_back();
+
+  return output;
 }
 
 std::vector<uint32_t> Hashids::decrypt(const std::string& input) const

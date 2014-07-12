@@ -36,6 +36,7 @@ public:
 
 private:
   std::string& _reorder(std::string &input, const std::string &salt) const;
+  std::string hash(uint32_t number, const std::string &alphabet) const;
 };
 
 };
