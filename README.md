@@ -25,6 +25,6 @@ To decrypt a hash:
 Custom salts, alphabets and minimum lengths are passed into the constructor of Hashids
 
 ```c++
-  hashidsxx::Hashids hash("salt", "abcdefghijklmnopqrstuvwxyz", 16);
+  hashidsxx::Hashids hash("salt", 16, "abcdefghijklmnopqrstuvwxyz");
   std::cout << hash.encrypt(123456789) << std::endl; // Prints oavlpogkzrxrkpxd
 ```
