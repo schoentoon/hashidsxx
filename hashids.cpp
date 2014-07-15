@@ -18,7 +18,7 @@ namespace hashidsxx {
 
 const static std::string separators("cfhistuCFHISTU");
 
-Hashids::Hashids(const std::string &salt, const std::string alphabet, unsigned int min_length)
+Hashids::Hashids(const std::string &salt, unsigned int min_length, const std::string alphabet)
 : _salt(salt)
 , _alphabet(alphabet)
 , _min_length(min_length)

@@ -26,5 +26,5 @@ Custom salts, alphabets and minimum lengths are passed into the constructor of H
 
 ```c++
   hashidsxx::Hashids hash("salt", "abcdefghijklmnopqrstuvwxyz", 16);
-  std::cout << hash.encrypt(123456789) << std::endl; // Prints ogkzrxrk
+  std::cout << hash.encrypt(123456789) << std::endl; // Prints oavlpogkzrxrkpxd
 ```

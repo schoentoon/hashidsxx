@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 
   std::string salt(argv[1]);
 
-  hashidsxx::Hashids hash(salt, 16);
+  hashidsxx::Hashids hash(salt);
 
   std::vector<uint32_t> output = hash.decrypt("ZQ2byW3j1OmYLJMD");
   for (uint32_t number : output) std::cout << number << std::endl;

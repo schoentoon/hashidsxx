@@ -35,9 +35,7 @@ private:
   std::string _guards;
 
 public:
-  Hashids(const std::string &salt = "", const std::string alphabet = DEFAULT_ALPHABET, unsigned int min_length = 0);
-
-  Hashids(const std::string &salt, unsigned int min_length) : Hashids(salt, DEFAULT_ALPHABET, min_length) {};
+  Hashids(const std::string &salt = "", unsigned int min_length = 0, const std::string alphabet = DEFAULT_ALPHABET);
 
   std::string encrypt(const std::vector<uint32_t> &input) const;
 
