@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 #define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
