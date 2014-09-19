@@ -38,9 +38,9 @@ private:
 public:
   Hashids(const std::string &salt = "", unsigned int min_length = 0, const std::string alphabet = DEFAULT_ALPHABET);
 
-  std::string encrypt(const std::vector<uint32_t> &input) const;
+  std::string encode(const std::vector<uint32_t> &input) const;
 
-  std::vector<uint32_t> decrypt(const std::string &input) const;
+  std::vector<uint32_t> decode(const std::string &input) const;
 
 private:
   std::string& _reorder(std::string &input, const std::string &salt) const;

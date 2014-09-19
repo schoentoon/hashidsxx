@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   try {
     hashidsxx::Hashids hash(salt, min_length, alphabet);
 
-    std::cout << hash.encrypt(input) << std::endl;
+    std::cout << hash.encode(input) << std::endl;
   } catch (const std::runtime_error &error) {
     std::cerr << error.what() << std::endl;
     return 1;

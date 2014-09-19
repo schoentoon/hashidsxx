@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
   try {
     hashidsxx::Hashids hash(salt, 0, alphabet);
 
-    for (uint32_t number : hash.decrypt(input)) std::cout << number << std::endl;
+    for (uint32_t number : hash.decode(input)) std::cout << number << std::endl;
   } catch (const std::runtime_error &error) {
     std::cerr << error.what() << std::endl;
     return 1;

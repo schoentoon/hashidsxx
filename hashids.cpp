@@ -148,7 +148,7 @@ std::vector<std::string> Hashids::_split(const std::string &input, const std::st
   return parts;
 }
 
-std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
+std::string Hashids::encode(const std::vector<uint32_t>& input) const
 {
   // Encrypting nothing makes no sense
   if (input.empty()) return "";
@@ -188,7 +188,7 @@ std::string Hashids::encrypt(const std::vector<uint32_t>& input) const
   return output;
 }
 
-std::vector<uint32_t> Hashids::decrypt(const std::string& input) const
+std::vector<uint32_t> Hashids::decode(const std::string& input) const
 {
   std::vector<uint32_t> output;
 
