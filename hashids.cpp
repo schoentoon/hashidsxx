@@ -182,6 +182,7 @@ std::string Hashids::encode(const std::vector<uint32_t>& input) const
   char lottery = encoded;
 
   std::string output;
+  if (_min_length > 0) output.reserve(_min_length); // reserve if we have a minimum length
   output.push_back(encoded);
 
   for (int i = 0; i < input.size(); ++i) {
