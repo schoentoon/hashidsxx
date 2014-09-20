@@ -54,6 +54,25 @@ Hashids::Hashids(const std::string &salt, unsigned int min_length, const std::st
   };
 }
 
+Hashids::Hashids(const Hashids& that)
+: _salt(that._salt)
+, _alphabet(that._alphabet)
+, _min_length(that._min_length)
+, _separators(that._separators)
+, _guards(that._guards) {
+}
+
+Hashids::Hashids(Hashids&& that)
+: _salt(std::move(that._salt))
+, _alphabet(std::move(that._alphabet))
+, _min_length(that._min_length)
+, _separators(std::move(that._separators))
+, _guards(std::move(that._guards)) {
+}
+
+Hashids::~Hashids() {
+}
+
 std::string& Hashids::_reorder(std::string &input, const std::string &salt) const
 {
   if (salt.empty()) return input;

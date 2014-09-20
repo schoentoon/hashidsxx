@@ -37,6 +37,10 @@ private:
 
 public:
   Hashids(const std::string &salt = "", unsigned int min_length = 0, const std::string alphabet = DEFAULT_ALPHABET);
+  Hashids(const Hashids& that);
+  Hashids(Hashids&& that);
+
+  virtual ~Hashids();
 
   std::string encode(const std::vector<uint32_t> &input) const;
 
