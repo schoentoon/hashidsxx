@@ -5,17 +5,14 @@ CC                := cc
 CXX               := c++
 
 DEPS     := hashids.o
-BINARIES := encrypt decrypt
+BINARIES := hashidsxx
 
 all: $(BINARIES)
 
 %.o: %.cpp %.h
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INC) -c $< -o $@
 
-encrypt: encrypt.cpp $(DEPS)
-	$(CXX) $(CXXFLAGS) $(DEFINES) $(INC) $< -o $@ $(DEPS)
-
-decrypt: decrypt.cpp $(DEPS)
+hashidsxx: hashidsxx.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INC) $< -o $@ $(DEPS)
 
 .PHONY: clean
