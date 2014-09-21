@@ -11,7 +11,7 @@
 #include "hashids.h"
 
 #include <iostream>
-
+#include <list>
 
 static const struct option g_LongOpts[] = {
   { "help",       no_argument,       0, 'h' },
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   bool encode = (strcmp(argv[1], "encode") == 0);
   if (encode == false && strcmp(argv[1], "decode") != 0) return usage(argv[0]); // we must make sure we were at least decode or encode you know
 
-  std::vector<uint32_t> encode_input;
+  std::list<uint32_t> encode_input;
   std::string decode_input;
 
   int arg, optindex;
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
   try {
     hashidsxx::Hashids hash(salt, min_length, alphabet);
 
-    if (encode) std::cout << hash.encode(encode_input) << std::endl;
+    if (encode) std::cout << hash.encode(encode_input.begin(), encode_input.end()) << std::endl;
     else {
       for (uint32_t number : hash.decode(decode_input)) std::cout << number << std::endl;
     }

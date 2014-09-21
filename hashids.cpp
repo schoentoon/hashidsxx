@@ -167,47 +167,6 @@ std::vector<std::string> Hashids::_split(const std::string &input, const std::st
   return parts;
 }
 
-std::string Hashids::encode(const std::vector<uint32_t>& input) const
-{
-  // Encrypting nothing makes no sense
-  if (input.empty()) return "";
-
-  // Make a copy of our alphabet so we can reorder it on the fly etc
-  std::string alphabet(_alphabet);
-
-  int values_hash = 0;
-  for (int i = 0; i < input.size(); ++i) values_hash += (input[i] % (i + 100));
-
-  char encoded = _alphabet[values_hash % _alphabet.size()];
-  char lottery = encoded;
-
-  std::string output;
-  if (_min_length > 0) output.reserve(_min_length); // reserve if we have a minimum length
-  output.push_back(encoded);
-
-  for (int i = 0; i < input.size(); ++i) {
-    uint32_t number = input[i];
-
-    std::string alphabet_salt;
-    alphabet_salt.push_back(lottery);
-    alphabet_salt.append(_salt).append(alphabet);
-
-    alphabet = _reorder(alphabet, alphabet_salt);
-
-    std::string last = _hash(number, alphabet);
-    output.append(last);
-
-    number %= last[0] + i;
-    output.push_back(_separators[number % _separators.size()]);
-  };
-
-  output.pop_back();
-
-  if (output.size() < _min_length) _ensure_length(output, alphabet, values_hash);
-
-  return output;
-}
-
 std::vector<uint32_t> Hashids::decode(const std::string& input) const
 {
   std::vector<uint32_t> output;
@@ -218,6 +177,8 @@ std::vector<uint32_t> Hashids::decode(const std::string& input) const
   if (parts.size() >= 2) hashid = parts[1];
 
   if (hashid.empty()) return output;
+
+  output.reserve(parts.size());
 
   char lottery = hashid[0];
   std::string alphabet(_alphabet);
