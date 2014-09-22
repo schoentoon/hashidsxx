@@ -13,6 +13,7 @@
 #define RATIO_GUARDS 12
 
 #include <iostream>
+#include <sstream>
 
 namespace hashidsxx {
 
@@ -119,6 +120,13 @@ std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const {
 std::string Hashids::encodeHex(const std::string &input) const {
   uint32_t number = std::stoul(input, nullptr, 16);
   return encode({ number });
+}
+
+std::string Hashids::decodeHex(const std::string &input) const {
+  std::stringstream output;
+  for (uint32_t number : decode(input))
+    output << std::hex << number << " ";
+  return output.str();
 }
 
 uint32_t Hashids::_unhash(const std::string &input,
