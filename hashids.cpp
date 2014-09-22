@@ -37,7 +37,7 @@ Hashids::Hashids(const std::string &salt, unsigned int min_length,
 
   _separators = _reorder(_separators, _salt);
 
-  int min_separators =
+  std::size_t min_separators =
       (int)std::ceil((float)_alphabet.length() / RATIO_SEPARATORS);
 
   if (_separators.empty() || _separators.length() < min_separators) {
@@ -132,7 +132,7 @@ std::string Hashids::decodeHex(const std::string &input) const {
 uint32_t Hashids::_unhash(const std::string &input,
                           const std::string &alphabet) const {
   uint32_t output = 0;
-  for (int i = 0; i < input.size(); ++i) {
+  for (std::string::size_type i = 0; i < input.size(); ++i) {
     char c = input[i];
     std::string::size_type pos = alphabet.find(c);
     output += pos * std::pow(alphabet.size(), input.size() - i - 1);
