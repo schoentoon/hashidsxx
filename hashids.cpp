@@ -12,6 +12,7 @@
 #define RATIO_SEPARATORS 3.5
 #define RATIO_GUARDS 12
 
+#include <iterator>
 #include <iostream>
 #include <sstream>
 
@@ -118,8 +119,16 @@ std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const {
 }
 
 std::string Hashids::encodeHex(const std::string &input) const {
-  uint32_t number = std::stoul(input, nullptr, 16);
-  return encode({ number });
+  std::istringstream iss(input);
+
+  std::vector<std::string> ids{std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>()};
+
+  std::vector<uint32_t> numbers;
+  numbers.reserve(ids.size());
+
+  for (std::string& str : ids) numbers.push_back(std::stoul(str, nullptr, 16));
+
+  return encode(numbers.begin(), numbers.end());
 }
 
 std::string Hashids::decodeHex(const std::string &input) const {
