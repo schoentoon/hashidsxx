@@ -23,7 +23,8 @@ static const struct option g_LongOpts[] = {
 };
 
 static int usage(const char *prog) {
-  std::cerr << "USAGE: [encode|decode]" << prog << " [options]" << std::endl
+  std::cerr << "USAGE: [encode|decode|encodeHex|decodeHex]" << prog
+            << " [options]" << std::endl
             << "-h, --help      Show this help message" << std::endl
             << "-s, --salt      The salt to use for the encryption" << std::endl
             << "-a, --alphabet  A custom alphabet to use" << std::endl
@@ -42,13 +43,18 @@ int main(int argc, char **argv) {
   std::string alphabet(DEFAULT_ALPHABET);
   unsigned int min_length = 0;
 
-  bool encode = (strcmp(argv[1], "encode") == 0);
-  if (encode == false && strcmp(argv[1], "decode") != 0)
-    return usage(argv[0]); // we must make sure we were at least decode or
-                           // encode you know
+  std::string mode(argv[1]);
+
+  if (mode != "encode" && mode != "encodeHex" && mode != "decode" &&
+      mode != "decodeHex")
+    return usage(argv[0]);
+
+  bool encode = mode.compare(0, 6, "encode") == 0;
+  bool hex = mode.compare(6, 3, "Hex") == 0;
 
   std::list<uint32_t> encode_input;
   std::string decode_input;
+  std::string hexInput;
 
   int arg, optindex;
   while ((arg = getopt_long(argc, argv, "hs:a:m:i:", g_LongOpts, &optindex)) !=
@@ -66,7 +72,9 @@ int main(int argc, char **argv) {
       min_length = std::stoi(std::string(optarg));
       break;
     case 'i':
-      if (encode)
+      if (hex)
+        hexInput = std::string(optarg);
+      else if (encode)
         encode_input.push_back(std::stoi(std::string(optarg)));
       else
         decode_input = std::string(optarg);
@@ -77,12 +85,19 @@ int main(int argc, char **argv) {
   try {
     hashidsxx::Hashids hash(salt, min_length, alphabet);
 
-    if (encode)
-      std::cout << hash.encode(encode_input.begin(), encode_input.end())
-                << std::endl;
-    else {
-      for (uint32_t number : hash.decode(decode_input))
-        std::cout << number << std::endl;
+    if (hex) {
+      if (encode)
+        std::cout << hash.encodeHex(hexInput) << std::endl;
+      else
+        std::cout << hash.decodeHex(hexInput) << std::endl;
+    } else {
+      if (encode)
+        std::cout << hash.encode(encode_input.begin(), encode_input.end())
+                  << std::endl;
+      else {
+        for (uint32_t number : hash.decode(decode_input))
+          std::cout << number << std::endl;
+      }
     }
   }
   catch (const std::runtime_error &error) {
