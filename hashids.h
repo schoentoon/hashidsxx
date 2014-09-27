@@ -11,6 +11,7 @@
 #include <initializer_list>
 #include <vector>
 #include <stdexcept>
+#include <cmath>
 
 #define DEFAULT_ALPHABET                                                       \
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
