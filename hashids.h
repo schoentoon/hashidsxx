@@ -77,7 +77,6 @@ public:
     i = 0;
     for (Iterator iter = begin; iter != end; ++iter) {
       uint32_t number = *iter;
-      ;
 
       std::string alphabet_salt;
       alphabet_salt.push_back(lottery);
