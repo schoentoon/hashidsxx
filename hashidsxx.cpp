@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   bool encode = mode.compare(0, 6, "encode") == 0;
   bool hex = mode.compare(6, 3, "Hex") == 0;
 
-  std::list<uint32_t> encode_input;
+  std::list<uint64_t> encode_input;
   std::string decode_input;
   std::string hexInput;
 
@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
       if (hex)
         hexInput = std::string(optarg);
       else if (encode)
-        encode_input.push_back(std::stoi(std::string(optarg)));
+        encode_input.push_back(std::stoul(optarg, nullptr, 10));
       else
         decode_input = std::string(optarg);
       break;
@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
         std::cout << hash.encode(encode_input.begin(), encode_input.end())
                   << std::endl;
       else {
-        for (uint32_t number : hash.decode(decode_input))
+        for (uint64_t number : hash.decode(decode_input))
           std::cout << number << std::endl;
       }
     }

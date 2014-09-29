@@ -108,7 +108,7 @@ std::string Hashids::_reorder_norewrite(const std::string &input,
   return _reorder(output, salt);
 }
 
-std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const {
+std::string Hashids::_hash(uint64_t number, const std::string &alphabet) const {
   std::string output;
   while (true) {
     output.insert(output.begin(), alphabet[number % alphabet.size()]);
@@ -119,28 +119,38 @@ std::string Hashids::_hash(uint32_t number, const std::string &alphabet) const {
 }
 
 std::string Hashids::encodeHex(const std::string &input) const {
-  std::istringstream iss(input);
+  std::vector<uint64_t> numbers;
+  std::string buffer;
+  std::string hex("0123456789abcdefABCDEF");
 
-  std::vector<std::string> ids{std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>()};
-
-  std::vector<uint32_t> numbers;
-  numbers.reserve(ids.size());
-
-  for (std::string& str : ids) numbers.push_back(std::stoul(str, nullptr, 16));
+  for (char c : input) {
+    if (hex.find_first_of(c) != std::string::npos)
+      buffer.push_back(c);
+    if (buffer.size() == 12) {
+      numbers.push_back(std::stoull("1" + buffer, nullptr, 16));
+      buffer.clear();
+    }
+  }
+  if (!buffer.empty())
+    numbers.push_back(std::stoull("1" + buffer, nullptr, 16));
 
   return encode(numbers.begin(), numbers.end());
 }
 
 std::string Hashids::decodeHex(const std::string &input) const {
   std::stringstream output;
-  for (uint32_t number : decode(input))
-    output << std::hex << number << " ";
+  std::stringstream hexbuf;
+  for (uint64_t number : decode(input)) {
+    hexbuf << std::hex << number;
+    output << hexbuf.str().substr(1);
+    hexbuf.str(std::string());
+  }
   return output.str();
 }
 
-uint32_t Hashids::_unhash(const std::string &input,
+uint64_t Hashids::_unhash(const std::string &input,
                           const std::string &alphabet) const {
-  uint32_t output = 0;
+  uint64_t output = 0;
   for (std::string::size_type i = 0; i < input.size(); ++i) {
     char c = input[i];
     std::string::size_type pos = alphabet.find(c);
@@ -192,8 +202,8 @@ std::vector<std::string> Hashids::_split(const std::string &input,
   return parts;
 }
 
-std::vector<uint32_t> Hashids::decode(const std::string &input) const {
-  std::vector<uint32_t> output;
+std::vector<uint64_t> Hashids::decode(const std::string &input) const {
+  std::vector<uint64_t> output;
 
   std::vector<std::string> parts = _split(input, _guards);
 

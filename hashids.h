@@ -46,7 +46,7 @@ public:
 
   virtual ~Hashids();
 
-  std::string encode(const std::initializer_list<uint32_t> &input) const {
+  std::string encode(const std::initializer_list<uint64_t> &input) const {
     return encode(input.begin(), input.end());
   }
 
@@ -76,7 +76,7 @@ public:
 
     i = 0;
     for (Iterator iter = begin; iter != end; ++iter) {
-      uint32_t number = *iter;
+      uint64_t number = *iter;
 
       std::string alphabet_salt;
       alphabet_salt.push_back(lottery);
@@ -100,7 +100,7 @@ public:
     return output;
   }
 
-  std::vector<uint32_t> decode(const std::string &input) const;
+  std::vector<uint64_t> decode(const std::string &input) const;
 
   std::string encodeHex(const std::string &input) const;
 
@@ -110,8 +110,8 @@ private:
   std::string &_reorder(std::string &input, const std::string &salt) const;
   std::string _reorder_norewrite(const std::string &input,
                                  const std::string &salt) const;
-  std::string _hash(uint32_t number, const std::string &alphabet) const;
-  uint32_t _unhash(const std::string &input, const std::string &alphabet) const;
+  std::string _hash(uint64_t number, const std::string &alphabet) const;
+  uint64_t _unhash(const std::string &input, const std::string &alphabet) const;
   void _ensure_length(std::string &output, std::string &alphabet,
                       int values_hash) const;
   std::vector<std::string> _split(const std::string &hash,
