@@ -7,24 +7,24 @@ hashidsxx requires a C++11 compiler and is single header, single source file. Si
 Basic usage
 -----------
 
-To encrypt a single integer
+To encode a single integer
 
 ```c++
   hashidsxx::Hashids hash();
-  std::cout << hash.encrypt({123}) << std::endl; // 'Mj3'
+  std::cout << hash.encode({123}) << std::endl; // 'Mj3'
 ```
 
-To decrypt a hash:
+To decode a hash:
 
 ```c++
   hashidsxx::Hashids hash();
-  std::vector<uint32_t> output = hash.decrypt("Mj3");
-  for (uin32_t h : output) std::cout << h << std::endl; // 123
+  std::vector<uint64_t> output = hash.decode("Mj3");
+  for (uin64_t h : output) std::cout << h << std::endl; // 123
 ```
 
 Custom salts, alphabets and minimum lengths are passed into the constructor of Hashids
 
 ```c++
   hashidsxx::Hashids hash("salt", 16, "abcdefghijklmnopqrstuvwxyz");
-  std::cout << hash.encrypt(123456789) << std::endl; // Prints oavlpogkzrxrkpxd
+  std::cout << hash.encode(123456789) << std::endl; // Prints oavlpogkzrxrkpxd
 ```
