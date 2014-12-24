@@ -7,11 +7,18 @@
 
 #pragma once
 
+#if __cplusplus >= 201103
+#  include <initializer_list>
+#endif
+
 #include <string>
-#include <initializer_list>
 #include <vector>
 #include <stdexcept>
 #include <cmath>
+
+// For C++11 we would use cstdint here instead of stdint.h but we want to be able
+// to link to this file with non C++11 as well
+#include <stdint.h>
 
 #define DEFAULT_ALPHABET                                                       \
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -42,13 +49,18 @@ public:
   Hashids(const std::string &salt = "", unsigned int min_length = 0,
           const std::string alphabet = DEFAULT_ALPHABET);
   Hashids(const Hashids &that);
+
+#if __cplusplus >= 201103
   Hashids(Hashids &&that);
+#endif
 
   virtual ~Hashids();
 
+#if __cplusplus >= 201103
   std::string encode(const std::initializer_list<uint64_t> &input) const {
     return encode(input.begin(), input.end());
   }
+#endif
 
   template <typename Iterator>
   std::string encode(const Iterator begin, const Iterator end) const {
@@ -92,7 +104,8 @@ public:
       ++i;
     };
 
-    output.pop_back();
+    // pop_back() is only available with C++11
+    output.erase(output.end() - 1);
 
     if (output.size() < _min_length)
       _ensure_length(output, alphabet, values_hash);

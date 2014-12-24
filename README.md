@@ -1,8 +1,13 @@
 hashidsxx
 =========
-A C++11 port of the Python *hashids* implementation. It generates Youtube-like hashes from one or many numbers. Use hashids when you do not want to expose your database ids to the user. Website: http://www.hashids.org/
+A C++11 port of the Python *hashids* implementation. It generates Youtube-like
+hashes from one or many numbers. Use hashids when you do not want to expose your
+database ids to the user. Website: http://www.hashids.org/
 
-hashidsxx requires a C++11 compiler and is single header, single source file. Simply compile the source file into an object file an link with it within your own project.
+The library itself is a single header, single source file. This library requires
+C++11 to compile, but you can include it and link against it perfectly fine with
+C++98. You'll just miss certain C++11 features like the initializer_list encode
+method, the move constructor, etc.
 
 Basic usage
 -----------

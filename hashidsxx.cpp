@@ -11,6 +11,7 @@
 #include "hashids.h"
 
 #include <iostream>
+#include <cstdlib>
 #include <list>
 
 static const struct option g_LongOpts[] = {
@@ -69,13 +70,13 @@ int main(int argc, char **argv) {
       alphabet = std::string(optarg);
       break;
     case 'm':
-      min_length = std::stoi(std::string(optarg));
+      min_length = std::strtol(optarg, NULL, 10);
       break;
     case 'i':
       if (hex)
         hexInput = std::string(optarg);
       else if (encode)
-        encode_input.push_back(std::stoul(optarg, nullptr, 10));
+        encode_input.push_back(std::strtol(optarg, NULL, 10));
       else
         decode_input = std::string(optarg);
       break;
@@ -95,8 +96,9 @@ int main(int argc, char **argv) {
         std::cout << hash.encode(encode_input.begin(), encode_input.end())
                   << std::endl;
       else {
-        for (uint64_t number : hash.decode(decode_input))
-          std::cout << number << std::endl;
+        std::vector<uint64_t> output(hash.decode(decode_input));
+        for (std::vector<uint64_t>::const_iterator iter = output.begin(); iter != output.end(); ++iter)
+          std::cout << *iter << std::endl;
       }
     }
   }

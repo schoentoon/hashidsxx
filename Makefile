@@ -1,4 +1,4 @@
-override CXXFLAGS += -std=c++11 -g -Wall -O2 -pipe -Wno-sign-compare
+override CXXFLAGS += -g -Wall -O2 -pipe -Wno-sign-compare
 INC               += -I.
 LDFLAGS           :=
 CC                := cc
@@ -10,7 +10,7 @@ BINARIES := hashidsxx
 all: $(BINARIES)
 
 %.o: %.cpp %.h
-	$(CXX) $(CXXFLAGS) $(DEFINES) $(INC) -c $< -o $@
+	$(CXX) -std=c++11 $(CXXFLAGS) $(DEFINES) $(INC) -c $< -o $@
 
 hashidsxx: hashidsxx.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INC) $< -o $@ $(DEPS)
