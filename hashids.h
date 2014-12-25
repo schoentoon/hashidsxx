@@ -47,7 +47,7 @@ private:
 
 public:
   Hashids(const std::string &salt = "", unsigned int min_length = 0,
-          const std::string alphabet = DEFAULT_ALPHABET);
+          const std::string &alphabet = DEFAULT_ALPHABET);
   Hashids(const Hashids &that);
 
 #if __cplusplus >= 201103

@@ -21,7 +21,7 @@ namespace hashidsxx {
 const static std::string separators("cfhistuCFHISTU");
 
 Hashids::Hashids(const std::string &salt, unsigned int min_length,
-                 const std::string alphabet)
+                 const std::string &alphabet)
     : _salt(salt), _alphabet(alphabet), _min_length(min_length) {
   std::for_each(separators.begin(), separators.end(), [this](char c) {
     if (_alphabet.find(c) != std::string::npos)
