@@ -9,6 +9,7 @@
 
 #if __cplusplus >= 201103
 #  include <initializer_list>
+#  include <type_traits>
 #endif
 
 #include <string>
@@ -57,7 +58,8 @@ public:
   virtual ~Hashids();
 
 #if __cplusplus >= 201103
-  std::string encode(const std::initializer_list<uint64_t> &input) const {
+  template <typename Number, typename std::enable_if<std::is_integral<Number>::value, int>::type* = nullptr>
+  std::string encode(const std::initializer_list<Number> &input) const {
     return encode(input.begin(), input.end());
   }
 #endif
