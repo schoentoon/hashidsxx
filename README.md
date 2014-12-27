@@ -15,14 +15,14 @@ Basic usage
 To encode a single integer
 
 ```c++
-  hashidsxx::Hashids hash();
+  hashidsxx::Hashids hash;
   std::cout << hash.encode({123}) << std::endl; // 'Mj3'
 ```
 
 To decode a hash:
 
 ```c++
-  hashidsxx::Hashids hash();
+  hashidsxx::Hashids hash;
   std::vector<uint64_t> output = hash.decode("Mj3");
   for (uin64_t h : output) std::cout << h << std::endl; // 123
 ```
