@@ -48,6 +48,24 @@ TEST(Decode, SaltMinLength) {
   ASSERT_EQ(output[0], 123);
 }
 
+TEST(Encode, SaltMinLengthAlphabet) {
+  const std::string alphabet("abcdefghijklmnopqrstuvwxyz");
+  hashidsxx::Hashids hash("salt", 16, alphabet);
+  std::string output = hash.encode({123456789});
+  ASSERT_GE(output.size(), 16);
+  ASSERT_EQ(output, "oavlpogkzrxrkpxd");
+  // we should NOT find any characters other than our alphabet in the output
+  ASSERT_EQ(output.find_first_not_of(alphabet), std::string::npos);
+}
+
+TEST(Decode, SaltMinLengthAlphabet) {
+  const std::string alphabet("abcdefghijklmnopqrstuvwxyz");
+  hashidsxx::Hashids hash("salt", 16, alphabet);
+  std::vector<uint64_t> output = hash.decode("oavlpogkzrxrkpxd");
+  ASSERT_EQ(output.size(), 1);
+  ASSERT_EQ(output[0], 123456789);
+}
+
 int main(int argc, char** argv) {
   ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   ::testing::FLAGS_gtest_shuffle = true;
