@@ -30,4 +30,4 @@ libgtest.a:
 .PHONY: clean
 
 clean:
-	rm -rf $(BINARIES) $(DEPS)
+	rm -rf $(BINARIES) $(DEPS) test.out
