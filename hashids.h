@@ -62,6 +62,11 @@ public:
   std::string encode(const std::initializer_list<Number> &input) const {
     return encode(input.begin(), input.end());
   }
+
+  template <typename... Number>
+  std::string encode(Number... numbers) const {
+    return encode({numbers...});
+  }
 #endif
 
   template <typename Iterator>
