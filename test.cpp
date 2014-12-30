@@ -28,7 +28,7 @@ TEST(Decode, Salt) {
 
 TEST(Encode, SaltMinLength) {
   hashidsxx::Hashids hash("salt", 15);
-  std::string output = hash.encode({1,2,3,4});
+  std::string output = hash.encode(1,2,3,4);
   ASSERT_GE(output.size(), 15);
   ASSERT_EQ(output, "7P231QiYuXU53Y9");
 }
@@ -64,6 +64,22 @@ TEST(Decode, SaltMinLengthAlphabet) {
   std::vector<uint64_t> output = hash.decode("oavlpogkzrxrkpxd");
   ASSERT_EQ(output.size(), 1);
   ASSERT_EQ(output[0], 123456789);
+}
+
+TEST(Encode, Hex) {
+  hashidsxx::Hashids hash("this is my salt");
+  std::string output = hash.encodeHex("abc");
+  ASSERT_EQ(output, "5RzW");
+  output = hash.encodeHex("f000000000000000f");
+  ASSERT_EQ(output, "8OlB1X6RjYuzPWW");
+}
+
+TEST(Decode, Hex) {
+  hashidsxx::Hashids hash("this is my salt");
+  std::string output = hash.decodeHex("5RzW");
+  ASSERT_EQ(output, "abc");
+  output = hash.decodeHex("8OlB1X6RjYuzPWW");
+  ASSERT_EQ(output, "f000000000000000f");
 }
 
 int main(int argc, char** argv) {
