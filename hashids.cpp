@@ -22,7 +22,8 @@ const static std::string separators("cfhistuCFHISTU");
 
 Hashids::Hashids(const std::string &salt, unsigned int min_length,
                  const std::string &alphabet)
-    : _salt(salt), _alphabet(alphabet), _min_length(min_length) {
+    : _salt(salt), _alphabet(alphabet), _min_length(min_length), _separators(),
+      _guards() {
   std::for_each(separators.begin(), separators.end(), [this](char c) {
     if (_alphabet.find(c) != std::string::npos)
       _separators.push_back(c);
@@ -30,8 +31,7 @@ Hashids::Hashids(const std::string &salt, unsigned int min_length,
   _alphabet.erase(
       std::remove_if(_alphabet.begin(), _alphabet.end(), [this](char c) {
         return _separators.find(c) != std::string::npos;
-      }),
-      _alphabet.end());
+      }), _alphabet.end());
   if (_alphabet.size() + _separators.size() < 16)
     throw std::runtime_error(
         "Alphabet must contain at least 16 unique characters");
