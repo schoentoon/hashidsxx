@@ -68,10 +68,12 @@ Hashids::Hashids(const Hashids &that)
       _min_length(that._min_length), _separators(that._separators),
       _guards(that._guards) {}
 
+#if __cplusplus >= 201103
 Hashids::Hashids(Hashids &&that)
     : _salt(std::move(that._salt)), _alphabet(std::move(that._alphabet)),
       _min_length(that._min_length), _separators(std::move(that._separators)),
       _guards(std::move(that._guards)) {}
+#endif
 
 Hashids::~Hashids() {}
 
