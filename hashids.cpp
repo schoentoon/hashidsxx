@@ -15,6 +15,7 @@
 #include <iterator>
 #include <iostream>
 #include <sstream>
+#include <numeric>
 
 namespace hashidsxx {
 
@@ -152,14 +153,14 @@ std::string Hashids::decodeHex(const std::string &input) const {
 
 uint64_t Hashids::_unhash(const std::string &input,
                           const std::string &alphabet) const {
-  uint64_t output = 0;
-  for (std::string::size_type i = 0; i < input.size(); ++i) {
-    char c = input[i];
-    std::string::size_type pos = alphabet.find(c);
-    output += pos * std::pow(alphabet.size(), input.size() - i - 1);
-  };
-
-  return output;
+  return std::accumulate(
+    input.begin(),
+    input.end(),
+    static_cast<uint64_t>(0),
+    [&alphabet](const uint64_t &carry, const char &item){
+      return carry * alphabet.size() + alphabet.find(item);
+    }
+  );
 }
 
 void Hashids::_ensure_length(std::string &output, std::string &alphabet,
