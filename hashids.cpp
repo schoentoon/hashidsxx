@@ -92,10 +92,7 @@ std::string &Hashids::_reorder(std::string &input,
     integer_sum += integer;
     unsigned int j = (integer + index + integer_sum) % i;
 
-    char tmp = input[j];
-    std::string trailer((j + 1 < input.length()) ? input.substr(j + 1) : "");
-    input = input.substr(0, j) + input[i] + trailer;
-    input = input.substr(0, i) + tmp + input.substr(i + 1);
+    std::swap(input[i], input[j]);
 
     --i;
     ++index;
