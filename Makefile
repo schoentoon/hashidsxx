@@ -1,4 +1,4 @@
-override CXXFLAGS += -g -Wall -O2 -pipe -Wextra
+override CXXFLAGS += -g -Wall -O2 -pipe -Wextra -Wno-sign-compare
 INC               += -I.
 LDFLAGS           :=
 CC                := cc
