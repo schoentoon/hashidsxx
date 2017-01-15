@@ -110,12 +110,11 @@ std::string Hashids::_reorder_norewrite(const std::string &input,
 
 std::string Hashids::_hash(uint64_t number, const std::string &alphabet) const {
   std::string output;
-  while (true) {
-    output.insert(output.begin(), alphabet[number % alphabet.size()]);
+  do {
+    output.push_back(alphabet[number % alphabet.size()]);
     number /= alphabet.size();
-    if (number == 0)
-      return output;
-  };
+  } while(number != 0);
+  return std::string(output.rbegin(), output.rend());
 }
 
 std::string Hashids::encodeHex(const std::string &input) const {
