@@ -21,9 +21,13 @@ test: test.out
 test.out: test.cpp libgtest.a $(DEPS)
 	$(CXX) -std=c++11 $(CXXFLAGS) $(INC) -Igtest-1.7.0/include -o $@ $< libgtest.a $(DEPS) -pthread
 
-libgtest.a:
-	wget -q https://googletest.googlecode.com/files/gtest-1.7.0.zip
-	unzip -qq gtest-1.7.0.zip
+gtest-1.7.0:
+	wget -q https://github.com/google/googletest/archive/release-1.7.0.zip
+	unzip -qq release-1.7.0.zip
+	rm release-1.7.0.zip
+	mv googletest-release-1.7.0 gtest-1.7.0
+
+libgtest.a: gtest-1.7.0
 	$(CXX) -std=c++11 -I gtest-1.7.0/include -I gtest-1.7.0 -c gtest-1.7.0/src/gtest-all.cc
 	ar -rv libgtest.a gtest-all.o
 
