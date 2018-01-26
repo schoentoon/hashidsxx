@@ -20,6 +20,4 @@
 *.out
 *.app
 
-hashidsxx
-gtest-*
-test.out
+/cmake-build-*/
