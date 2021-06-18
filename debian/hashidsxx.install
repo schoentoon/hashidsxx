@@ -1,0 +1,3 @@
+libhashids.a /usr/lib/
+hashids.h    /usr/include/
+hashidsxx    /usr/bin/
