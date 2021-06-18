@@ -24,8 +24,8 @@ static const struct option g_LongOpts[] = {
 };
 
 static int usage(const char *prog) {
-  std::cerr << "USAGE: [encode|decode|encodeHex|decodeHex]" << prog
-            << " [options]" << std::endl
+  std::cerr << "USAGE: " << prog << " [encode|decode|encodeHex|decodeHex] "
+            << "[options]" << std::endl
             << "-h, --help      Show this help message" << std::endl
             << "-s, --salt      The salt to use for the encryption" << std::endl
             << "-a, --alphabet  A custom alphabet to use" << std::endl
