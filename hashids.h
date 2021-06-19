@@ -55,7 +55,7 @@ public:
   Hashids(Hashids &&that);
 #endif
 
-  virtual ~Hashids();
+  virtual ~Hashids() = default;
 
 #if __cplusplus >= 201103
   template <typename Number, typename std::enable_if<std::is_integral<Number>::value, int>::type* = nullptr>
