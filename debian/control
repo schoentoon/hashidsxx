@@ -1,0 +1,16 @@
+Source: hashidsxx
+Section: libdevel
+Priority: optional
+Maintainer: Vladimir Yu. Ivanov <inbox@vova-ivanov.info>
+Build-Depends:
+    debhelper-compat (= 12)
+Standards-Version: 4.4.1
+Homepage: https://hashids.org/
+
+Package: hashidsxx
+Architecture: any
+Depends:
+    ${shlibs:Depends},
+    ${misc:Depends}
+Description: C++11 implementation of JS library.
+ Generates short, unique, non-sequential ids from numbers.

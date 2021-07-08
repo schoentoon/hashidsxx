@@ -82,6 +82,45 @@ TEST(Decode, Hex) {
   ASSERT_EQ(output, "f000000000000000f");
 }
 
+TEST(EncodeDecode, IntLoopUnroll) {
+  hashidsxx::Hashids hash("this is my salt");
+  for (uint64_t i = 0; i < 1000000; i += 5) {
+    ASSERT_EQ(hash.decode(hash.encode(i + 0))[0], i + 0);
+    ASSERT_EQ(hash.decode(hash.encode(i + 1))[0], i + 1);
+    ASSERT_EQ(hash.decode(hash.encode(i + 2))[0], i + 2);
+    ASSERT_EQ(hash.decode(hash.encode(i + 3))[0], i + 3);
+    ASSERT_EQ(hash.decode(hash.encode(i + 4))[0], i + 4);
+  }
+}
+
+TEST(EncodeDecode, HexLoopUnroll) {
+  hashidsxx::Hashids hash("this is my salt");
+  for (uint64_t i = 0; i < 1000000; i += 5) {
+    {
+      std::stringstream ss; ss << std::hex << i + 0;
+      EXPECT_TRUE(hash.decodeHex(hash.encodeHex(ss.str())) == ss.str());
+    }
+    {
+      std::stringstream ss; ss << std::hex << i + 1;
+      EXPECT_TRUE(hash.decodeHex(hash.encodeHex(ss.str())) == ss.str());
+    }
+    {
+      std::stringstream ss; ss << std::hex << i + 2;
+      EXPECT_TRUE(hash.decodeHex(hash.encodeHex(ss.str())) == ss.str());
+    }
+    {
+      std::stringstream ss; ss << std::hex << i + 3;
+      EXPECT_TRUE(hash.decodeHex(hash.encodeHex(ss.str())) == ss.str());
+    }
+    {
+      std::stringstream ss; ss << std::hex << i + 4;
+      EXPECT_TRUE(hash.decodeHex(hash.encodeHex(ss.str())) == ss.str());
+    }
+  }
+}
+
+// check hex invalid
+
 int main(int argc, char** argv) {
   ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   ::testing::FLAGS_gtest_shuffle = true;

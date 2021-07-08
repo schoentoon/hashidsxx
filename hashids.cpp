@@ -76,8 +76,6 @@ Hashids::Hashids(Hashids &&that)
       _guards(std::move(that._guards)) {}
 #endif
 
-Hashids::~Hashids() {}
-
 std::string &Hashids::_reorder(std::string &input,
                                const std::string &salt) const {
   if (salt.empty())

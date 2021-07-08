@@ -4,13 +4,16 @@ LDFLAGS           :=
 CC                := cc
 CXX               := c++
 
-DEPS     := hashids.o
+DEPS     := libhashids.a
 BINARIES := hashidsxx
 
 all: $(BINARIES)
 
-%.o: %.cpp %.h
+hashids.o: hashids.cpp hashids.h
 	$(CXX) -std=c++11 $(CXXFLAGS) $(INC) -c $< -o $@
+
+libhashids.a: hashids.o
+	ar -rv $@ $<
 
 hashidsxx: hashidsxx.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(INC) $< -o $@ $(DEPS)
@@ -34,4 +37,4 @@ libgtest.a: gtest-1.7.0
 .PHONY: clean
 
 clean:
-	rm -rf $(BINARIES) $(DEPS) test.out
+	rm -rf $(BINARIES) $(DEPS) hashids.o test.out
